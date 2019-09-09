@@ -1,48 +1,48 @@
 <template>
-  <v-app>
-    <v-card width="400" class="mx-auto mt-5">
-      <v-card-title class="pb-0">
-        <h1>Login</h1>
-      </v-card-title>
-      <v-divider></v-divider>
-      <v-card-text>
-        <v-form @submit.prevent="handleSubmit">
-          <v-text-field
-            label="Login"
-            :class="{ 'has-error': submitting && invalidLogin }"
-            v-model="user.login"
-            prepend-icon="mdi-account-circle"
-          />
-          <v-text-field
-            :type="showPassword ? 'text' : 'password'"
-            label="Password"
-            :class="{ 'has-error': submitting && invalidPassword }"
-            v-model="user.password"
-            prepend-icon="mdi-lock"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="showPassword = !showPassword"
-          />
-        </v-form>
-        <p v-if="error.length" class="error-message">
-          Login and password must be 3 chars or more.
-        </p>
-        <p v-else></p>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-btn color="success" @click="handleRegisterMode">Register </v-btn>
-        <v-btn
-          ref="submit"
-          :color="invalidPassword || invalidLogin ? '#BBDEFB' : 'info'"
-          @click="handleSubmit"
-          >Login
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-app>
+  <v-card width="400" class="mx-auto mt-5">
+    <v-card-title class="pb-0">
+      <h1>Login</h1>
+    </v-card-title>
+    <v-divider></v-divider>
+    <v-card-text>
+      <v-form @submit.prevent="handleSubmit">
+        <v-text-field
+          label="Login"
+          :class="{ 'has-error': submitting && invalidLogin }"
+          v-model="user.login"
+          prepend-icon="mdi-account-circle"
+        />
+        <v-text-field
+          :type="showPassword ? 'text' : 'password'"
+          label="Password"
+          :class="{ 'has-error': submitting && invalidPassword }"
+          v-model="user.password"
+          prepend-icon="mdi-lock"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append="showPassword = !showPassword"
+        />
+      </v-form>
+      <p v-if="error.length" class="error-message">
+        Login and password must be 3 chars or more.
+      </p>
+      <p v-else></p>
+    </v-card-text>
+    <v-divider></v-divider>
+    <v-card-actions>
+      <v-btn color="success" @click="handleRegisterMode">Register </v-btn>
+      <v-btn
+        ref="submit"
+        :color="invalidPassword || invalidLogin ? '#BBDEFB' : 'info'"
+        @click="handleSubmit"
+        >Login
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
+import router from "../router";
+
 export default {
   name: "Login",
   data() {
@@ -102,10 +102,7 @@ export default {
       }
     },
     handleRegisterMode: function() {
-      this.$emit("registerMode", {
-        login: this.user.login,
-        password: this.user.password
-      });
+      router.push({ name: "registration" });
     },
     handleSubmit() {
       this.clearStatus();

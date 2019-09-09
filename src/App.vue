@@ -1,33 +1,19 @@
 <template>
-  <v-app
-    style="background: url('./assets/background.svg') no-repeat; background-size: cover"
-  >
+  <v-app>
     <v-app-bar app>
-      <!-- -->
+      <router-link :to="{ name: 'login' }" class="r-link">Login</router-link>
+      <router-link :to="{ name: 'registration' }" class="r-link"
+        >Registration</router-link
+      >
+      <router-link
+        :to="{ name: 'user', params: { id: this.id } }"
+        class="r-link"
+        >User</router-link
+      >
     </v-app-bar>
 
-    <v-content>
-      <Login
-        v-if="mode === 'login'"
-        class="action"
-        @registerMode="toggleRegisterMode"
-        @contentMode="toggleContentMode"
-        v-bind:currentUser="this.user"
-      />
-      <Registration
-        v-else-if="mode === 'register'"
-        class="action"
-        @loginMode="toggleLoginMode"
-        v-bind:currentUser="this.user"
-      />
-      <ContentList
-        v-else-if="mode === 'content'"
-        class="content"
-        v-bind:currentUser="this.user"
-      />
-      <div v-else>
-        <!-- empty -->
-      </div>
+    <v-content class="content">
+      <router-view class="view"></router-view>
     </v-content>
 
     <v-footer app>
@@ -37,40 +23,19 @@
 </template>
 
 <script>
-import Login from "@/components/Login";
-import Registration from "@/components/Registration";
-import ContentList from "@/components/ContentList";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "App",
-  components: {
-    Login,
-    Registration,
-    ContentList
-  },
-  data() {
-    return {
-      showPassword: false,
-      mode: "login",
-      user: {
-        login: "",
-        password: ""
-      }
-    };
+  computed: {
+    ...mapState({
+      login: state => state.user.login,
+      password: state => state.user.password,
+      id: state => state.user.id
+    })
   },
   methods: {
-    toggleLoginMode: function(user) {
-      this.mode = "login";
-      this.user = user;
-    },
-    toggleRegisterMode: function(user) {
-      this.mode = "register";
-      this.user = user;
-    },
-    toggleContentMode: function(user) {
-      this.mode = "content";
-      this.user = user;
-    }
+    ...mapActions("user", ["setLogin", "setPassword", "setId"])
   }
 };
 </script>
@@ -82,13 +47,11 @@ html {
   width: 100%;
 }
 
-.action {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+.r-link {
+  margin-left: 100px;
 }
-
 .content {
+  background: url("./assets/background.svg") no-repeat;
+  background-size: cover;
 }
 </style>
